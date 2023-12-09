@@ -1,0 +1,125 @@
+.gradient-background {
+    background: linear-gradient(180deg,  #222222,rgb(88, 88, 88));
+}
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    padding: 0px;
+    border-radius: 3px;
+}
+
+.search-bar {
+    flex: 1;
+    padding: 5px;
+    border: 5px;
+    border-radius: 3px;
+    padding-top: 10px;
+}
+
+.location-button, .destination-button {
+    margin:13px ;
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    justify-content: space-between;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.location-button:hover, .destination-button:hover {
+    background-color: #f0f0f0;
+}
+
+* {box-sizing: border-box;}
+body {font-family: Verdana, sans-serif;}
+.mySlides {display: none;}
+img {vertical-align: middle;}
+
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Caption text */
+.text {
+  color: #fff;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #fff;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 2s;
+}
+
+@keyframes fade {
+  from {opacity: .4} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .text {font-size: 11px}
+}
+
+.img {
+    width: 90%;
+    height: 10%;
+    border-radius: 8px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 10px;
+}
+
+.text-styling {
+    color: #bbb;
+    width: 80%;
+    height: 15px;
+}
+
+.absolute_pos {
+    position: relative;
+    margin-left:20% ;
+}
+.absolute_pos1 {
+    position: relative;
+    margin-left:7.5% ;
+}

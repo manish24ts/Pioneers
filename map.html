@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <title>Pioneers</title>
+
+    <!--we customized our website icon by using link--> 
+
+    <link rel="website icon" href="https://cdn-icons-png.flaticon.com/512/3202/3202926.png">
+    
+    <!--using external css and css framework bootstrap-->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+ </head>
+
+ <body class="gradient-background">
+
+    <!--nav bar from bootstap modified for our needs-->
+
+        <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid gradient-background">
+          <a class="navbar-brand" href="#" style="color: aliceblue;">Pioneers</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="map.html" style="color: aliceblue;">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="profile.html" style="color: aliceblue;">Profile</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: aliceblue;">
+                  trasportation modes
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="payment.html" >car</a></li>
+                  <li><a class="dropdown-item" href="payment.html">bike</a></li>
+                  <li><a class="dropdown-item" href="payment.html">auto</a></li>
+                </ul>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="saftey.html" style="color: aliceblue;">Saftey</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="driver.html" style="color: aliceblue;">Driver</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="customer.html" style="color: aliceblue;">customer</a>
+                  </li>
+                  <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="login.html" style="color: aliceblue;">login</a>
+                      </li>
+                      <li class="nav-item">
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit" style="color: aliceblue;">Search</button>
+            </form>
+          </div>
+      </nav></div>
+    
+
+    <!--we are using iframe tag to get google maps, ideally we should use google maps api to get current location-->
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3328.373271760645!2d78.44371191550025!3d17.362083379785634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb98a739c5b87f%3A0x62b454b207471094!2sM.L.R.%20Institute%20of%20Technology%20-%20DHR!5e0!3m2!1sen!2sus!4v1635243921421!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <!--Google map api should be used here to get distance between two locations. based on this data you use another api/database to provide dynamic fare-->
+
+    <div class="search-container">
+            <input type="text" id="destination-input" class="search-bar" placeholder="Search for location">
+            <button class="location-button" onclick="getCurrentLocation()">Current Location</button>
+            <button class="destination-button" onclick="calculateDistance()">Destination</button>
+        </div>
+        <div id="distance-result"></div>
+        <script>
+        function getDistance(origin, destination) {
+            var service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [origin],
+                destinations: [destination],
+                travelMode: 'DRIVING',
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, function(response, status) {
+                if (status === 'OK') {
+                    var distance = response.rows[0].elements[0].distance.text;
+                    document.getElementById('distance-result').innerHTML = "Distance to destination: " + distance;
+                } else {
+                    alert('Error was not successful for the following reason: ' + status);
+                }
+            });
+        }</script>
+        </div>
+
+
+        <!-- we are using javascript for calculation of price of fare-->
+
+
+        <div class="container">
+            <h1 class="text-styling">Taxi Booking</h1><br><br>
+            <p class="text-styling">Distance: <input class="absolute_pos" type="number" id="distance" placeholder="Enter distance in km"> km</p>
+            <p class="text-styling">Number of Passengers: <input class="absolute_pos1" type="number" id="passengers" placeholder="Enter number of passengers"> </p>
+            <button onclick="calculatePrice()">Calculate Price</button>
+            <p id="result" class="text-styling"></p>
+        </div>
+        <script>
+            function calculatePrice() {
+                var distance = document.getElementById("distance").value;
+                var passengers = document.getElementById("passengers").value;
+                var totalPrice = distance * passengers *10;
+                
+                document.getElementById("result").innerHTML = "Total Price: " + totalPrice + " ₹";
+            }
+        </script>
+
+        <!--here we are using keyframe to give animation to code-->
+
+        <div class="slideshow-container">
+
+            <div class="mySlides fade">
+              <div class="numbertext">1</div>
+              <img src="images\rent_important_days.jpeg" class="img">
+              <div class="text"><b>Rent car for important days in advance</b></div>
+            </div>
+            
+            <div class="mySlides fade">
+              <div class="numbertext">2</div>
+              <img src="images\ride_at_finger_tips.jpeg" class="img">
+              <div class="text"><b>Book a ride at your finger tips</b></div>
+            </div>
+            
+            <div class="mySlides fade">
+              <div class="numbertext"></div>
+              <img src="images\ride_in_vaccation.jpeg" class="img">
+              <div class="text"><b>Need vaccation planning? we got you covered</b></div>
+            </div>
+            
+            </div>
+            <br>
+            
+            <div style="text-align:center">
+              <span class="dot"></span> 
+              <span class="dot"></span> 
+              <span class="dot"></span> 
+            </div>
+            
+            <script>
+            let slideIndex = 0;
+            showSlides();
+            
+            function showSlides() {
+              let i;
+              let slides = document.getElementsByClassName("mySlides");
+              let dots = document.getElementsByClassName("dot");
+              for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+              }
+              slideIndex++;
+              if (slideIndex > slides.length) {slideIndex = 1}    
+              for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+              }
+              slides[slideIndex-1].style.display = "block";  
+              dots[slideIndex-1].className += " active";
+              setTimeout(showSlides, 2000); // Change image every 2 seconds
+            }
+            </script>
+ </body>
+</html>

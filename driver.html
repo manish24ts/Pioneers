@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pioneers</title>
+    <link rel="website icon" href="https://cdn-icons-png.flaticon.com/512/3202/3202926.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--nav bar-->
+    
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid gradient-background">
+          <a class="navbar-brand" href="#" style="color: aliceblue;">Pioneers</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="map.html" style="color: aliceblue;">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="profile.html" style="color: aliceblue;">Profile</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: aliceblue;">
+                  trasportation modes
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="payment.html" >car</a></li>
+                  <li><a class="dropdown-item" href="payment.html">bike</a></li>
+                  <li><a class="dropdown-item" href="payment.html">auto</a></li>
+                </ul>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="saftey.html" style="color: aliceblue;">Saftey</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="driver.html" style="color: aliceblue;">Driver</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="customer.html" style="color: aliceblue;">customer</a>
+                  </li>
+                  <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="login.html" style="color: aliceblue;">login</a>
+                      </li>
+                      <li class="nav-item">
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit" style="color: aliceblue;">Search</button>
+            </form>
+          </div>
+      </nav></div>
+    <!--main part-->
+    <div class="container mt-5" id="DriverCards">
+        <div class="row">
+
+        </div>
+        <!-- Review cards will be appended here -->
+    </div>
+
+    <!--modal logic here-->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit review</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add your form elements for editing patient details here -->
+                    <p>Edit customer details here...</p>
+                    <form>
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editComment" class="form-label">Comment</label>
+                            <input type="text" class="form-control" id="editDisease" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesBtn" onclick="saveChanges()">Save
+                        changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        fetch("https://doc-back.onrender.com/patients")
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res);
+                const container = document.getElementById("DriverCards");
+                let patients = res;
+                patients.forEach((patient, index) => {
+                    let row=document.querySelector(".row");
+                    const card = document.createElement("div");
+                    card.classList.add("card", "m-2","col-lg-3", "col-md-5", "col-10");
+                    const cardBody = document.createElement("div");
+                    cardBody.classList.add("card-body");
+                    cardBody.innerHTML = `
+                        <h5 class="card-title">${patient.name}</h5>
+                        <p class="card-text">Age: ${patient.age}</p>
+                        <p class="card-text">Gender: ${patient.gender}</p>
+                        <p class="card-text">Rating: ${patient.weight} stars</p>
+                        <p class="card-text">comment: ${patient.disease}</p>
+                        <p class="card-text">Driver: ${patient.doctor}</p>
+                        <p class="card-text">ID: ${patient.id}</p>
+                        <button type="button" class="btn btn-primary" onclick="editPatient(${patient.id})">Edit</button>
+                        <button type="button" class="btn btn-danger ms-2" onclick="deletePatient(${patient.id})">Delete</button>
+                    `;
+                    card.appendChild(cardBody);
+                    row.appendChild(card);
+                });
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+            });
+        function editPatient(patientId) {
+            const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+            fetch(`https://doc-back.onrender.com/patients/${patientId}`)
+                .then((res) => res.json())
+                .then((patient) => {
+                    document.getElementById('editName').value = patient.name;
+                    document.getElementById('editDisease').value = patient.disease;
+                    document.getElementById('saveChangesBtn').setAttribute('data-patient-id', patientId);
+                })
+                .catch((error) => {
+                    console.error("Error fetching data:", error);
+                });
+
+            // Show the modal
+            editModal.show();
+        }
+        function saveChanges() {
+            const patientId = document.getElementById('saveChangesBtn').getAttribute('data-patient-id');
+
+            const newName = document.getElementById('editName').value;
+            const newDisease = document.getElementById('editDisease').value;
+            fetch(`https://doc-back.onrender.com/patients/${patientId}`)
+                .then((res) => res.json())
+                .then((existingPatient) => {
+                    existingPatient.name = newName;
+                    existingPatient.disease = newDisease;
+                    return fetch(`https://doc-back.onrender.com/patients/${patientId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(existingPatient),
+                    });
+                })
+                .then((res) => res.json())
+                .then((updatedPatient) => {
+                    console.log("Patient updated:", updatedPatient);
+                    const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+                    editModal.hide();
+                    location.reload()
+                })
+                .catch((error) => {
+                    console.error("Error updating Review:", error);
+                });
+        }
+        function deletePatient(patientId) {
+            if (confirm("Are you sure you want to delete this patient?")) {
+                fetch(`https://doc-back.onrender.com/patients/${patientId}`, {
+                    method: 'DELETE',
+                })
+                    .then((res) => {
+                        if (res.ok) {
+                            console.log("Review deleted successfully");
+                            location.reload()
+                        } else {
+                            console.error("Error deleting review:", res.statusText);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error deleting review:", error);
+                    });
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
